@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.skytiger.net.dao.AdminUserDao">
-  <resultMap id="BaseResultMap" type="com.skytiger.net.entity.AdminUser">
-    <id column="adminUser_ad_id" jdbcType="VARCHAR" property="adId" />
-    <result column="adminUser_username" jdbcType="VARCHAR" property="username" />
-    <result column="adminUser_password" jdbcType="VARCHAR" property="password" />
-    <result column="adminUser_remark" jdbcType="VARCHAR" property="remark" />
+<mapper namespace="com.skytiger.net.dao.SysPostDao">
+  <resultMap id="BaseResultMap" type="com.skytiger.net.entity.SysPost">
+    <id column="sysPost_post_id" jdbcType="VARCHAR" property="postId" />
+    <result column="sysPost_post_num" jdbcType="VARCHAR" property="postNum" />
+    <result column="sysPost_create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="sysPost_post_remark" jdbcType="VARCHAR" property="postRemark" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -66,16 +66,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    adminUser.ad_id as adminUser_ad_id, adminUser.username as adminUser_username, adminUser.password as adminUser_password, 
-    adminUser.remark as adminUser_remark
+    sysPost.post_id as sysPost_post_id, sysPost.post_num as sysPost_post_num, sysPost.create_time as sysPost_create_time, 
+    sysPost.post_remark as sysPost_post_remark
   </sql>
-  <select id="selectByExample" parameterType="com.skytiger.net.entity.AdminUserExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.skytiger.net.entity.SysPostExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from admin_user adminUser
+    from sys_post sysPost
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -89,76 +89,76 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from admin_user adminUser
-    where adminUser.ad_id = #{adId,jdbcType=VARCHAR}
+    from sys_post sysPost
+    where sysPost.post_id = #{postId,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from admin_user
-    where ad_id = #{adId,jdbcType=VARCHAR}
+    delete from sys_post
+    where post_id = #{postId,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="com.skytiger.net.entity.AdminUserExample">
-    delete from admin_user adminUser
+  <delete id="deleteByExample" parameterType="com.skytiger.net.entity.SysPostExample">
+    delete from sys_post sysPost
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.skytiger.net.entity.AdminUser">
-    insert into admin_user (ad_id, username, password, 
-      remark)
-    values (#{adId,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{remark,jdbcType=VARCHAR})
+  <insert id="insert" parameterType="com.skytiger.net.entity.SysPost">
+    insert into sys_post (post_id, post_num, create_time, 
+      post_remark)
+    values (#{postId,jdbcType=VARCHAR}, #{postNum,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{postRemark,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.skytiger.net.entity.AdminUser">
-    insert into admin_user
+  <insert id="insertSelective" parameterType="com.skytiger.net.entity.SysPost">
+    insert into sys_post
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="adId != null">
-        ad_id,
+      <if test="postId != null">
+        post_id,
       </if>
-      <if test="username != null">
-        username,
+      <if test="postNum != null">
+        post_num,
       </if>
-      <if test="password != null">
-        password,
+      <if test="createTime != null">
+        create_time,
       </if>
-      <if test="remark != null">
-        remark,
+      <if test="postRemark != null">
+        post_remark,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="adId != null">
-        #{adId,jdbcType=VARCHAR},
+      <if test="postId != null">
+        #{postId,jdbcType=VARCHAR},
       </if>
-      <if test="username != null">
-        #{username,jdbcType=VARCHAR},
+      <if test="postNum != null">
+        #{postNum,jdbcType=VARCHAR},
       </if>
-      <if test="password != null">
-        #{password,jdbcType=VARCHAR},
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="remark != null">
-        #{remark,jdbcType=VARCHAR},
+      <if test="postRemark != null">
+        #{postRemark,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.skytiger.net.entity.AdminUserExample" resultType="java.lang.Long">
-    select count(*) from admin_user adminUser
+  <select id="countByExample" parameterType="com.skytiger.net.entity.SysPostExample" resultType="java.lang.Long">
+    select count(*) from sys_post sysPost
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update admin_user adminUser
+    update sys_post sysPost
     <set>
-      <if test="record.adId != null">
-        adminUser.ad_id = #{record.adId,jdbcType=VARCHAR},
+      <if test="record.postId != null">
+        sysPost.post_id = #{record.postId,jdbcType=VARCHAR},
       </if>
-      <if test="record.username != null">
-        adminUser.username = #{record.username,jdbcType=VARCHAR},
+      <if test="record.postNum != null">
+        sysPost.post_num = #{record.postNum,jdbcType=VARCHAR},
       </if>
-      <if test="record.password != null">
-        adminUser.password = #{record.password,jdbcType=VARCHAR},
+      <if test="record.createTime != null">
+        sysPost.create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.remark != null">
-        adminUser.remark = #{record.remark,jdbcType=VARCHAR},
+      <if test="record.postRemark != null">
+        sysPost.post_remark = #{record.postRemark,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -166,35 +166,35 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update admin_user adminUser
-    set adminUser.ad_id = #{record.adId,jdbcType=VARCHAR},
-      adminUser.username = #{record.username,jdbcType=VARCHAR},
-      adminUser.password = #{record.password,jdbcType=VARCHAR},
-      adminUser.remark = #{record.remark,jdbcType=VARCHAR}
+    update sys_post sysPost
+    set sysPost.post_id = #{record.postId,jdbcType=VARCHAR},
+      sysPost.post_num = #{record.postNum,jdbcType=VARCHAR},
+      sysPost.create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      sysPost.post_remark = #{record.postRemark,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.skytiger.net.entity.AdminUser">
-    update admin_user
+  <update id="updateByPrimaryKeySelective" parameterType="com.skytiger.net.entity.SysPost">
+    update sys_post
     <set>
-      <if test="username != null">
-        username = #{username,jdbcType=VARCHAR},
+      <if test="postNum != null">
+        post_num = #{postNum,jdbcType=VARCHAR},
       </if>
-      <if test="password != null">
-        password = #{password,jdbcType=VARCHAR},
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="remark != null">
-        remark = #{remark,jdbcType=VARCHAR},
+      <if test="postRemark != null">
+        post_remark = #{postRemark,jdbcType=VARCHAR},
       </if>
     </set>
-    where ad_id = #{adId,jdbcType=VARCHAR}
+    where post_id = #{postId,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.skytiger.net.entity.AdminUser">
-    update admin_user
-    set username = #{username,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR},
-      remark = #{remark,jdbcType=VARCHAR}
-    where ad_id = #{adId,jdbcType=VARCHAR}
+  <update id="updateByPrimaryKey" parameterType="com.skytiger.net.entity.SysPost">
+    update sys_post
+    set post_num = #{postNum,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      post_remark = #{postRemark,jdbcType=VARCHAR}
+    where post_id = #{postId,jdbcType=VARCHAR}
   </update>
 </mapper>

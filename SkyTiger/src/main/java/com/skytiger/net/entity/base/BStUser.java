@@ -17,6 +17,14 @@ public class BStUser extends BaseModel<String> implements Serializable {
 
     private String orderPrice;
 
+    private String orderNum;
+
+    private String taskId;
+
+    private Integer businessId;
+
+    private String confirmHost;
+
     private String remark;
 
     private static final long serialVersionUID = 1L;
@@ -69,6 +77,38 @@ public class BStUser extends BaseModel<String> implements Serializable {
         this.orderPrice = orderPrice == null ? null : orderPrice.trim();
     }
 
+    public String getOrderNum() {
+        return orderNum;
+    }
+
+    public void setOrderNum(String orderNum) {
+        this.orderNum = orderNum == null ? null : orderNum.trim();
+    }
+
+    public String getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(String taskId) {
+        this.taskId = taskId == null ? null : taskId.trim();
+    }
+
+    public Integer getBusinessId() {
+        return businessId;
+    }
+
+    public void setBusinessId(Integer businessId) {
+        this.businessId = businessId;
+    }
+
+    public String getConfirmHost() {
+        return confirmHost;
+    }
+
+    public void setConfirmHost(String confirmHost) {
+        this.confirmHost = confirmHost == null ? null : confirmHost.trim();
+    }
+
     public String getRemark() {
         return remark;
     }
@@ -89,6 +129,10 @@ public class BStUser extends BaseModel<String> implements Serializable {
         sb.append(", userStatus=").append(userStatus);
         sb.append(", updateTime=").append(updateTime);
         sb.append(", orderPrice=").append(orderPrice);
+        sb.append(", orderNum=").append(orderNum);
+        sb.append(", taskId=").append(taskId);
+        sb.append(", businessId=").append(businessId);
+        sb.append(", confirmHost=").append(confirmHost);
         sb.append(", remark=").append(remark);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

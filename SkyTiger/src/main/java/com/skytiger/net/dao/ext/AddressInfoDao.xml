@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skytiger.net.dao.AddressInfoDao">
+  <!--
+    文件的生成时间： 2018-04-20 17:57:49.
+    你应该把Mapper类的扩展方法的sql语句放在这个文件里面
+  -->
+  
+</mapper>

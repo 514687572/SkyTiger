@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skytiger.net.dao.AddressInfoDao">
+  <resultMap id="BaseResultMap" type="com.skytiger.net.entity.AddressInfo">
+    <id column="addressInfo_info_id" jdbcType="VARCHAR" property="infoId" />
+    <result column="addressInfo_info_name" jdbcType="VARCHAR" property="infoName" />
+    <result column="addressInfo_info_phone" jdbcType="VARCHAR" property="infoPhone" />
+    <result column="addressInfo_info_province" jdbcType="VARCHAR" property="infoProvince" />
+    <result column="addressInfo_info_city" jdbcType="VARCHAR" property="infoCity" />
+    <result column="addressInfo_info_area" jdbcType="VARCHAR" property="infoArea" />
+    <result column="addressInfo_address_details" jdbcType="VARCHAR" property="addressDetails" />
+    <result column="addressInfo_info_remark" jdbcType="VARCHAR" property="infoRemark" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    addressInfo.info_id as addressInfo_info_id, addressInfo.info_name as addressInfo_info_name, 
+    addressInfo.info_phone as addressInfo_info_phone, addressInfo.info_province as addressInfo_info_province, 
+    addressInfo.info_city as addressInfo_info_city, addressInfo.info_area as addressInfo_info_area, 
+    addressInfo.address_details as addressInfo_address_details, addressInfo.info_remark as addressInfo_info_remark
+  </sql>
+  <select id="selectByExample" parameterType="com.skytiger.net.entity.AddressInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from address_info addressInfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="fromRowNum != null and toRowNum >= 0">
+      limit #{fromRowNum}, #{toRowNum}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from address_info addressInfo
+    where addressInfo.info_id = #{infoId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from address_info
+    where info_id = #{infoId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.skytiger.net.entity.AddressInfoExample">
+    delete from address_info addressInfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.skytiger.net.entity.AddressInfo">
+    insert into address_info (info_id, info_name, info_phone, 
+      info_province, info_city, info_area, 
+      address_details, info_remark)
+    values (#{infoId,jdbcType=VARCHAR}, #{infoName,jdbcType=VARCHAR}, #{infoPhone,jdbcType=VARCHAR}, 
+      #{infoProvince,jdbcType=VARCHAR}, #{infoCity,jdbcType=VARCHAR}, #{infoArea,jdbcType=VARCHAR}, 
+      #{addressDetails,jdbcType=VARCHAR}, #{infoRemark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.skytiger.net.entity.AddressInfo">
+    insert into address_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="infoId != null">
+        info_id,
+      </if>
+      <if test="infoName != null">
+        info_name,
+      </if>
+      <if test="infoPhone != null">
+        info_phone,
+      </if>
+      <if test="infoProvince != null">
+        info_province,
+      </if>
+      <if test="infoCity != null">
+        info_city,
+      </if>
+      <if test="infoArea != null">
+        info_area,
+      </if>
+      <if test="addressDetails != null">
+        address_details,
+      </if>
+      <if test="infoRemark != null">
+        info_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="infoId != null">
+        #{infoId,jdbcType=VARCHAR},
+      </if>
+      <if test="infoName != null">
+        #{infoName,jdbcType=VARCHAR},
+      </if>
+      <if test="infoPhone != null">
+        #{infoPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="infoProvince != null">
+        #{infoProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="infoCity != null">
+        #{infoCity,jdbcType=VARCHAR},
+      </if>
+      <if test="infoArea != null">
+        #{infoArea,jdbcType=VARCHAR},
+      </if>
+      <if test="addressDetails != null">
+        #{addressDetails,jdbcType=VARCHAR},
+      </if>
+      <if test="infoRemark != null">
+        #{infoRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.skytiger.net.entity.AddressInfoExample" resultType="java.lang.Long">
+    select count(*) from address_info addressInfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update address_info addressInfo
+    <set>
+      <if test="record.infoId != null">
+        addressInfo.info_id = #{record.infoId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.infoName != null">
+        addressInfo.info_name = #{record.infoName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.infoPhone != null">
+        addressInfo.info_phone = #{record.infoPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.infoProvince != null">
+        addressInfo.info_province = #{record.infoProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="record.infoCity != null">
+        addressInfo.info_city = #{record.infoCity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.infoArea != null">
+        addressInfo.info_area = #{record.infoArea,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addressDetails != null">
+        addressInfo.address_details = #{record.addressDetails,jdbcType=VARCHAR},
+      </if>
+      <if test="record.infoRemark != null">
+        addressInfo.info_remark = #{record.infoRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update address_info addressInfo
+    set addressInfo.info_id = #{record.infoId,jdbcType=VARCHAR},
+      addressInfo.info_name = #{record.infoName,jdbcType=VARCHAR},
+      addressInfo.info_phone = #{record.infoPhone,jdbcType=VARCHAR},
+      addressInfo.info_province = #{record.infoProvince,jdbcType=VARCHAR},
+      addressInfo.info_city = #{record.infoCity,jdbcType=VARCHAR},
+      addressInfo.info_area = #{record.infoArea,jdbcType=VARCHAR},
+      addressInfo.address_details = #{record.addressDetails,jdbcType=VARCHAR},
+      addressInfo.info_remark = #{record.infoRemark,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.skytiger.net.entity.AddressInfo">
+    update address_info
+    <set>
+      <if test="infoName != null">
+        info_name = #{infoName,jdbcType=VARCHAR},
+      </if>
+      <if test="infoPhone != null">
+        info_phone = #{infoPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="infoProvince != null">
+        info_province = #{infoProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="infoCity != null">
+        info_city = #{infoCity,jdbcType=VARCHAR},
+      </if>
+      <if test="infoArea != null">
+        info_area = #{infoArea,jdbcType=VARCHAR},
+      </if>
+      <if test="addressDetails != null">
+        address_details = #{addressDetails,jdbcType=VARCHAR},
+      </if>
+      <if test="infoRemark != null">
+        info_remark = #{infoRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where info_id = #{infoId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.skytiger.net.entity.AddressInfo">
+    update address_info
+    set info_name = #{infoName,jdbcType=VARCHAR},
+      info_phone = #{infoPhone,jdbcType=VARCHAR},
+      info_province = #{infoProvince,jdbcType=VARCHAR},
+      info_city = #{infoCity,jdbcType=VARCHAR},
+      info_area = #{infoArea,jdbcType=VARCHAR},
+      address_details = #{addressDetails,jdbcType=VARCHAR},
+      info_remark = #{infoRemark,jdbcType=VARCHAR}
+    where info_id = #{infoId,jdbcType=VARCHAR}
+  </update>
+</mapper>

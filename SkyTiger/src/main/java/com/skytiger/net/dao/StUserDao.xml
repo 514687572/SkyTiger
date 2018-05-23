@@ -8,6 +8,10 @@
     <result column="stUser_user_status" jdbcType="VARCHAR" property="userStatus" />
     <result column="stUser_update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="stUser_order_price" jdbcType="VARCHAR" property="orderPrice" />
+    <result column="stUser_order_num" jdbcType="VARCHAR" property="orderNum" />
+    <result column="stUser_task_id" jdbcType="VARCHAR" property="taskId" />
+    <result column="stUser_business_id" jdbcType="INTEGER" property="businessId" />
+    <result column="stUser_confirm_host" jdbcType="VARCHAR" property="confirmHost" />
     <result column="stUser_remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -71,7 +75,9 @@
   <sql id="Base_Column_List">
     stUser.user_id as stUser_user_id, stUser.user_mobile as stUser_user_mobile, stUser.user_password as stUser_user_password, 
     stUser.user_status as stUser_user_status, stUser.update_time as stUser_update_time, 
-    stUser.order_price as stUser_order_price, stUser.remark as stUser_remark
+    stUser.order_price as stUser_order_price, stUser.order_num as stUser_order_num, stUser.task_id as stUser_task_id, 
+    stUser.business_id as stUser_business_id, stUser.confirm_host as stUser_confirm_host, 
+    stUser.remark as stUser_remark
   </sql>
   <select id="selectByExample" parameterType="com.skytiger.net.entity.StUserExample" resultMap="BaseResultMap">
     select
@@ -109,10 +115,12 @@
   <insert id="insert" parameterType="com.skytiger.net.entity.StUser">
     insert into st_user (user_id, user_mobile, user_password, 
       user_status, update_time, order_price, 
-      remark)
+      order_num, task_id, business_id, 
+      confirm_host, remark)
     values (#{userId,jdbcType=VARCHAR}, #{userMobile,jdbcType=VARCHAR}, #{userPassword,jdbcType=VARCHAR}, 
       #{userStatus,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{orderPrice,jdbcType=VARCHAR}, 
-      #{remark,jdbcType=VARCHAR})
+      #{orderNum,jdbcType=VARCHAR}, #{taskId,jdbcType=VARCHAR}, #{businessId,jdbcType=INTEGER}, 
+      #{confirmHost,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.skytiger.net.entity.StUser">
     insert into st_user
@@ -134,6 +142,18 @@
       </if>
       <if test="orderPrice != null">
         order_price,
+      </if>
+      <if test="orderNum != null">
+        order_num,
+      </if>
+      <if test="taskId != null">
+        task_id,
+      </if>
+      <if test="businessId != null">
+        business_id,
+      </if>
+      <if test="confirmHost != null">
+        confirm_host,
       </if>
       <if test="remark != null">
         remark,
@@ -157,6 +177,18 @@
       </if>
       <if test="orderPrice != null">
         #{orderPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNum != null">
+        #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="taskId != null">
+        #{taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="businessId != null">
+        #{businessId,jdbcType=INTEGER},
+      </if>
+      <if test="confirmHost != null">
+        #{confirmHost,jdbcType=VARCHAR},
       </if>
       <if test="remark != null">
         #{remark,jdbcType=VARCHAR},
@@ -190,6 +222,18 @@
       <if test="record.orderPrice != null">
         stUser.order_price = #{record.orderPrice,jdbcType=VARCHAR},
       </if>
+      <if test="record.orderNum != null">
+        stUser.order_num = #{record.orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskId != null">
+        stUser.task_id = #{record.taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.businessId != null">
+        stUser.business_id = #{record.businessId,jdbcType=INTEGER},
+      </if>
+      <if test="record.confirmHost != null">
+        stUser.confirm_host = #{record.confirmHost,jdbcType=VARCHAR},
+      </if>
       <if test="record.remark != null">
         stUser.remark = #{record.remark,jdbcType=VARCHAR},
       </if>
@@ -206,6 +250,10 @@
       stUser.user_status = #{record.userStatus,jdbcType=VARCHAR},
       stUser.update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       stUser.order_price = #{record.orderPrice,jdbcType=VARCHAR},
+      stUser.order_num = #{record.orderNum,jdbcType=VARCHAR},
+      stUser.task_id = #{record.taskId,jdbcType=VARCHAR},
+      stUser.business_id = #{record.businessId,jdbcType=INTEGER},
+      stUser.confirm_host = #{record.confirmHost,jdbcType=VARCHAR},
       stUser.remark = #{record.remark,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -229,6 +277,18 @@
       <if test="orderPrice != null">
         order_price = #{orderPrice,jdbcType=VARCHAR},
       </if>
+      <if test="orderNum != null">
+        order_num = #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="taskId != null">
+        task_id = #{taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="businessId != null">
+        business_id = #{businessId,jdbcType=INTEGER},
+      </if>
+      <if test="confirmHost != null">
+        confirm_host = #{confirmHost,jdbcType=VARCHAR},
+      </if>
       <if test="remark != null">
         remark = #{remark,jdbcType=VARCHAR},
       </if>
@@ -242,6 +302,10 @@
       user_status = #{userStatus,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       order_price = #{orderPrice,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=VARCHAR},
+      task_id = #{taskId,jdbcType=VARCHAR},
+      business_id = #{businessId,jdbcType=INTEGER},
+      confirm_host = #{confirmHost,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=VARCHAR}
   </update>

@@ -11,6 +11,7 @@
 		<param-value>
 		classpath:applicationContext.xml
 		classpath:spring-bean.xml
+		classpath:spring-threadPool.xml
 		</param-value>
 	</context-param>
 	<filter>

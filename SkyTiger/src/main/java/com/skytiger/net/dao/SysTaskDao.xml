@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skytiger.net.dao.SysTaskDao">
+  <resultMap id="BaseResultMap" type="com.skytiger.net.entity.SysTask">
+    <id column="sysTask_task_id" jdbcType="VARCHAR" property="taskId" />
+    <result column="sysTask_task_url" jdbcType="VARCHAR" property="taskUrl" />
+    <result column="sysTask_task_count" jdbcType="INTEGER" property="taskCount" />
+    <result column="sysTask_task_status" jdbcType="VARCHAR" property="taskStatus" />
+    <result column="sysTask_task_time" jdbcType="TIMESTAMP" property="taskTime" />
+    <result column="sysTask_task_business_name" jdbcType="VARCHAR" property="taskBusinessName" />
+    <result column="sysTask_host_name" jdbcType="VARCHAR" property="hostName" />
+    <result column="sysTask_task_remark" jdbcType="VARCHAR" property="taskRemark" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    sysTask.task_id as sysTask_task_id, sysTask.task_url as sysTask_task_url, sysTask.task_count as sysTask_task_count, 
+    sysTask.task_status as sysTask_task_status, sysTask.task_time as sysTask_task_time, 
+    sysTask.task_business_name as sysTask_task_business_name, sysTask.host_name as sysTask_host_name, 
+    sysTask.task_remark as sysTask_task_remark
+  </sql>
+  <select id="selectByExample" parameterType="com.skytiger.net.entity.SysTaskExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_task sysTask
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="fromRowNum != null and toRowNum >= 0">
+      limit #{fromRowNum}, #{toRowNum}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_task sysTask
+    where sysTask.task_id = #{taskId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from sys_task
+    where task_id = #{taskId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.skytiger.net.entity.SysTaskExample">
+    delete from sys_task sysTask
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.skytiger.net.entity.SysTask">
+    insert into sys_task (task_id, task_url, task_count, 
+      task_status, task_time, task_business_name, 
+      host_name, task_remark)
+    values (#{taskId,jdbcType=VARCHAR}, #{taskUrl,jdbcType=VARCHAR}, #{taskCount,jdbcType=INTEGER}, 
+      #{taskStatus,jdbcType=VARCHAR}, #{taskTime,jdbcType=TIMESTAMP}, #{taskBusinessName,jdbcType=VARCHAR}, 
+      #{hostName,jdbcType=VARCHAR}, #{taskRemark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.skytiger.net.entity.SysTask">
+    insert into sys_task
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="taskId != null">
+        task_id,
+      </if>
+      <if test="taskUrl != null">
+        task_url,
+      </if>
+      <if test="taskCount != null">
+        task_count,
+      </if>
+      <if test="taskStatus != null">
+        task_status,
+      </if>
+      <if test="taskTime != null">
+        task_time,
+      </if>
+      <if test="taskBusinessName != null">
+        task_business_name,
+      </if>
+      <if test="hostName != null">
+        host_name,
+      </if>
+      <if test="taskRemark != null">
+        task_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="taskId != null">
+        #{taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="taskUrl != null">
+        #{taskUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="taskCount != null">
+        #{taskCount,jdbcType=INTEGER},
+      </if>
+      <if test="taskStatus != null">
+        #{taskStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="taskTime != null">
+        #{taskTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskBusinessName != null">
+        #{taskBusinessName,jdbcType=VARCHAR},
+      </if>
+      <if test="hostName != null">
+        #{hostName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskRemark != null">
+        #{taskRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.skytiger.net.entity.SysTaskExample" resultType="java.lang.Long">
+    select count(*) from sys_task sysTask
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update sys_task sysTask
+    <set>
+      <if test="record.taskId != null">
+        sysTask.task_id = #{record.taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskUrl != null">
+        sysTask.task_url = #{record.taskUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskCount != null">
+        sysTask.task_count = #{record.taskCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.taskStatus != null">
+        sysTask.task_status = #{record.taskStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskTime != null">
+        sysTask.task_time = #{record.taskTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.taskBusinessName != null">
+        sysTask.task_business_name = #{record.taskBusinessName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hostName != null">
+        sysTask.host_name = #{record.hostName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskRemark != null">
+        sysTask.task_remark = #{record.taskRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update sys_task sysTask
+    set sysTask.task_id = #{record.taskId,jdbcType=VARCHAR},
+      sysTask.task_url = #{record.taskUrl,jdbcType=VARCHAR},
+      sysTask.task_count = #{record.taskCount,jdbcType=INTEGER},
+      sysTask.task_status = #{record.taskStatus,jdbcType=VARCHAR},
+      sysTask.task_time = #{record.taskTime,jdbcType=TIMESTAMP},
+      sysTask.task_business_name = #{record.taskBusinessName,jdbcType=VARCHAR},
+      sysTask.host_name = #{record.hostName,jdbcType=VARCHAR},
+      sysTask.task_remark = #{record.taskRemark,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.skytiger.net.entity.SysTask">
+    update sys_task
+    <set>
+      <if test="taskUrl != null">
+        task_url = #{taskUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="taskCount != null">
+        task_count = #{taskCount,jdbcType=INTEGER},
+      </if>
+      <if test="taskStatus != null">
+        task_status = #{taskStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="taskTime != null">
+        task_time = #{taskTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskBusinessName != null">
+        task_business_name = #{taskBusinessName,jdbcType=VARCHAR},
+      </if>
+      <if test="hostName != null">
+        host_name = #{hostName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskRemark != null">
+        task_remark = #{taskRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where task_id = #{taskId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.skytiger.net.entity.SysTask">
+    update sys_task
+    set task_url = #{taskUrl,jdbcType=VARCHAR},
+      task_count = #{taskCount,jdbcType=INTEGER},
+      task_status = #{taskStatus,jdbcType=VARCHAR},
+      task_time = #{taskTime,jdbcType=TIMESTAMP},
+      task_business_name = #{taskBusinessName,jdbcType=VARCHAR},
+      host_name = #{hostName,jdbcType=VARCHAR},
+      task_remark = #{taskRemark,jdbcType=VARCHAR}
+    where task_id = #{taskId,jdbcType=VARCHAR}
+  </update>
+</mapper>
