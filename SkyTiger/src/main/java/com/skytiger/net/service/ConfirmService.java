@@ -16,7 +16,6 @@ import com.skytiger.net.entity.Dictionary;
 import com.skytiger.net.entity.StUser;
 import com.skytiger.net.entity.SysBusiness;
 import com.skytiger.net.entity.SysPost;
-import com.skytiger.net.entity.SysTask;
 
 @Service
 public class ConfirmService {
@@ -50,7 +49,11 @@ public class ConfirmService {
 				post=postList.get(new Random().nextInt(postList.size()-1));
 				SysBusiness business=sysService.getBusinessById(user.getBusinessId()+"");
 				//先发货
-				businessService.CollectGoods(post.getPostNum(),business.getSbPassword(), business.getSbName(),user.getOrderNum());
+				try {
+					businessService.CollectGoods(post.getPostNum(),business.getSbPassword(), business.getSbName(),user.getOrderNum());
+				} catch (Exception e) {
+					continue;
+				}
 			}
 			
 			try {

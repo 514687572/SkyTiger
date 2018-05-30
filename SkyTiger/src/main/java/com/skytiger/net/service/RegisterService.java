@@ -10,8 +10,6 @@ import javax.annotation.Resource;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -82,9 +80,19 @@ public class RegisterService {
 			driver.get(baseurl);
 			String address =driver.getCurrentUrl();
 			if(address.equals(baseurl)) {
+				int j=0;
 				while(!ElementExist(By.id("mobile"))) {
-					
+					System.out.println("______________________________________________________________9870987098709");
+					j++;
+					if(j==5) {
+						break;
+					}
 				}
+				
+				if(j==5) {
+					driver.getCurrentUrl();
+				}
+				
 				if(driver.findElement(By.id("mobile")) != null) {
 					driver.findElement(By.id("mobile")).sendKeys(mobi);
 					if(driver.findElement(By.id("password")) != null) {

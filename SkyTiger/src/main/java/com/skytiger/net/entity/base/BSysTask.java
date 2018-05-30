@@ -1,8 +1,9 @@
 package com.skytiger.net.entity.base;
 
-import com.stip.mybatis.generator.plugin.BaseModel;
 import java.io.Serializable;
 import java.util.Date;
+
+import com.stip.mybatis.generator.plugin.BaseModel;
 
 public class BSysTask extends BaseModel<String> implements Serializable {
     private String taskId;

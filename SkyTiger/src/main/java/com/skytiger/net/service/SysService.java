@@ -30,7 +30,7 @@ import com.skytiger.net.entity.SysPost;
 import com.skytiger.net.entity.SysPostExample;
 import com.skytiger.net.entity.SysTask;
 import com.skytiger.net.entity.SysTaskExample;
-import com.skytiger.net.entity.base.BSysTask;
+
 
 @Service
 public class SysService {
@@ -106,6 +106,15 @@ public class SysService {
 		return count;
 	}
 	
+	public List<StUser> getUserByStatus(String status) {
+		StUserExample example=new StUserExample();
+		example.createCriteria().andUserStatusEqualTo(status);
+		
+		List<StUser> list=stUserDao.selectByExample(example);
+		
+		return list;
+	}
+	
 	public List<SysPost> getPostNumList() {
 		SysPostExample example=new SysPostExample();
 		
@@ -138,7 +147,7 @@ public class SysService {
 		return addressList;
 	}
 	
-	public List<SysTask> getTaskByStatus(String status) {
+	public synchronized List<SysTask> getTaskByStatus(String status) {
 		SysTaskExample example=new SysTaskExample();
 		example.createCriteria().andTaskStatusEqualTo(status);//0未开始1正在注册2注册完成3正在创建订单4执行完成
 		
@@ -470,6 +479,29 @@ public class SysService {
 		}
 		return null;
 	}
+	
+	public String getDictoryByKey(String key) {
+		DictionaryExample example=new DictionaryExample();
+		example.createCriteria().andDicKeyEqualTo(key);
+		
+		List<Dictionary> dicList=dictionaryDao.selectByExample(example);
+		
+		if(dicList!=null&&dicList.size()>0) {
+			return dicList.get(0).getDicValue();
+		}
+		return null;
+	}
+	
+	public void updateDicByHost(String host,String value) {
+		DictionaryExample example=new DictionaryExample();
+		example.createCriteria().andDicKeyEqualTo(host);
+		Dictionary dic=new Dictionary();
+		dic.setDicValue(value);
+		
+		int dicList=dictionaryDao.updateByExampleSelective(dic, example);
+		
+	}
+	
 	/**
 	 * 查询出所有订单信息
 	 * @return
@@ -481,5 +513,21 @@ public class SysService {
 		
 		return list;
 	}
+	/**
+	 * 删除任务表
+	 * @param userId
+	 * @param records
+	 * @param page
+	 * @return
+	 */
+	public void deleteTask(SysTask taskId) {
+		
+		sysTaskDao.deleteByPrimaryKey(taskId);
+	}
 	
+	public void deteteUserTask(List<StUser> utask) {
+		for(StUser user:utask) {
+			stUserDao.deleteByPrimaryKey(user);
+		}
+	}
 }

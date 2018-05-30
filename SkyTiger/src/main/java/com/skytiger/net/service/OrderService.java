@@ -12,13 +12,11 @@ import java.util.Random;
 import javax.annotation.Resource;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.firefox.internal.ProfilesIni;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
@@ -40,11 +38,11 @@ public class OrderService {
 	@Resource
 	private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
-	public void placeAnOrder(final String address, final String adminid, final String taskId) throws Exception {
+	public void placeAnOrder(final String address, final String adminid, final String taskId, final String host) throws Exception {
 		threadPoolTaskExecutor.execute(new Runnable() {
 			public void run() {
 				try {
-					doPlaceAnOrder(address, adminid,taskId);
+					doPlaceAnOrder(address, adminid,taskId,host);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -52,9 +50,16 @@ public class OrderService {
 		});
 	}
 
-	public void doPlaceAnOrder(String address, String adminid,String taskId) throws Exception {
+	public void doPlaceAnOrder(String address, String adminid,String taskId,String host) throws Exception {
 		System.setProperty("sun.net.client.defaultReadTimeout", "95000");
 		List<StUser> al = sysService.getUsersByTaskId(taskId);
+		
+		if(al!=null&&al.size()>0) {
+			
+		}else {
+			sysService.updateDicByHost(host,"0");
+			return;
+		}
 
 		StUser user = null;
 		for (int i = 0; i < al.size(); i++) {
@@ -62,7 +67,13 @@ public class OrderService {
 			try {
 				createOrder(user,address,i);
 			} catch (Exception e) {
-				System.out.println(e);
+				if (driver != null) {
+					try {
+						driver.quit();
+					} catch (Exception e1) {
+
+					}
+				}
 				continue;
 			}
 		} 
@@ -75,12 +86,13 @@ public class OrderService {
 			sysService.updateTaskStatus(task);
 		}
 		
-		TaskScheduledController.isRunning=false;
+		sysService.updateDicByHost(host,"0");
 
 	}
 	
 	public void createOrder(StUser user,String address,int i) throws Exception {
-		if (i%2 == 0) {
+		WebDriver drivers = null;
+		if (i%2 == 1) {
 			try {
 				Map<String, String> mobileEmulation = new HashMap<String, String>();    
 				   mobileEmulation.put("deviceName", "iPhone 6");    
@@ -88,7 +100,6 @@ public class OrderService {
 				   chromeOptions.put("mobileEmulation", mobileEmulation);       
 				   DesiredCapabilities capabilities = DesiredCapabilities.chrome();         
 				   capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
-				WebDriver drivers;
 				System.setProperty("sun.net.client.defaultReadTimeout", "95000");
 				List<Dictionary> dicList = sysService.getDictoryByType("chrome");
 
@@ -103,11 +114,14 @@ public class OrderService {
 				drivers = new ChromeDriver(capabilities);
 				drivers.manage().window().maximize();
 				drivers.get("http://m.tyfo.com/wap/user/userLoginUI.htm?encodeURI=E521024F8A650F392D960B8F3B3A5BCCD0DD3A9541D05AF0CFD58DC50C8D2007");
+				drivers.findElement(By.xpath("//*[@id=\"bronwerDiv\"]/div/nav/span[2]/em")).click();
 				drivers.findElement(By.id("mobile")).sendKeys(user.getUserMobile());
 				drivers.findElement(By.xpath("//*[@id=\"form1\"]/div[2]/input")).sendKeys("123123aa");
-				drivers.findElement(By.xpath("//*[@id=\"bronwerDiv\"]/div/div[1]/p[1]")).click();
+				drivers.findElement(By.xpath("//*[@id=\"bronwerDiv\"]/div/div[2]/p[1]")).click();
 				drivers.get(address);
 				drivers.findElement(By.xpath("/html/body/div[3]/div/footer/div[5]")).click();
+				JavascriptExecutor js = (JavascriptExecutor) drivers;
+				js.executeScript("document.getElementById('numDiv').value="+(rd.nextInt(3)+1)+";");
 				drivers.findElement(By.xpath("/html/body/div[4]/div/div/div[1]/p")).click();
 				Thread.sleep(1000);
 				String MPrice = drivers.findElement(By.id("totalGoodPriceSpan")).getText();
@@ -120,7 +134,9 @@ public class OrderService {
 				sysService.updateByPrimaryKey(user);
 				drivers.quit();
 			} catch (Exception e) {
-				driver.quit();
+				user.setUserStatus("noAddress");
+				sysService.updateByPrimaryKey(user);
+				drivers.quit();
 			}
 		} else {
 			WebDriver driver;
@@ -158,6 +174,8 @@ public class OrderService {
 					}*/
 					String price = driver.findElement(By.id("goods_price")).getText();
 					if (driver.findElement(By.id("buy_now")) != null) {
+						driver.findElement(By.xpath("//*[@id=\"quantity\"]")).clear();
+						driver.findElement(By.xpath("//*[@id=\"quantity\"]")).sendKeys((rd.nextInt(3)+1)+"");
 						driver.findElement(By.id("buy_now")).click();
 						
 						Thread.sleep(2000);
@@ -172,6 +190,14 @@ public class OrderService {
 						
 						if(m==5) {
 							driver.getCurrentUrl();
+						}
+						
+						try {
+							WebElement submit_pay1 =driver.findElement(By.id("submit_pay1"));
+						} catch (Exception e1) {
+							user.setUserStatus("noAddress");
+							sysService.updateByPrimaryKey(user);
+							driver.quit();
 						}
 						
 						if (driver.findElement(By.id("submit_pay1")) != null) {
@@ -224,11 +250,17 @@ public class OrderService {
 									}
 								}
 							}
+						}else {
+							user.setUserStatus("noAddress");
+							sysService.updateByPrimaryKey(user);
+							driver.quit();
 						} 
 					}else {
 						driver.quit();
 					} 
 
+				}else {
+					driver.quit();
 				} 
 		 } // ------判断pc
 	}
@@ -258,5 +290,5 @@ public class OrderService {
 		}
 
 	}
-
+	
 }

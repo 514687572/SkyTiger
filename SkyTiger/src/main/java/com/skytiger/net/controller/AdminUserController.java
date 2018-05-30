@@ -68,6 +68,19 @@ public class AdminUserController {
 
 		return result;
 	}
+	
+	/**
+	 * 支付完成
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/isRunning")
+	public void isRunning(HttpServletRequest request) throws Exception {
+		sysService.updateDicByHost("isRunning","1");
+	}
+	
+	
 	/**
 	 * 修改订单号
 	 * @param request
@@ -237,5 +250,23 @@ public class AdminUserController {
 		
 		return result;
 	}
+	/**
+	 *删除任务
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/deleteTask")
+	public Map<String, Object> deleteTask(HttpServletRequest request) throws Exception {
+		Map<String, Object> result = new HashMap<String, Object>();
+		String taskId = request.getParameter("taskId")+"";
+		SysTask task = sysService.getTaskById(taskId);
+		List<StUser> utask = sysService.getUserByTaskId(taskId);
+		sysService.deleteTask(task);
+		sysService.deteteUserTask(utask);
+		result.put("success", Boolean.TRUE);
+		return result;
+	}
+
 	
 	}

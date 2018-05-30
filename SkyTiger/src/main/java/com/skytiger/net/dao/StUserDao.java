@@ -8,4 +8,6 @@ import com.stip.mybatis.generator.plugin.GenericMapper;
  * generator XML
  **/
 public interface StUserDao extends GenericMapper<StUser, StUserExample, String> {
+
+	void deleteByPrimaryKey(StUser user);
 }

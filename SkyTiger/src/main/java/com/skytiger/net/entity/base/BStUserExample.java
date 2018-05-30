@@ -1,10 +1,11 @@
 package com.skytiger.net.entity.base;
 
-import com.stip.mybatis.generator.plugin.BaseCriteria;
-import com.stip.mybatis.generator.plugin.BaseModelExample;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import com.stip.mybatis.generator.plugin.BaseCriteria;
+import com.stip.mybatis.generator.plugin.BaseModelExample;
 
 public class BStUserExample extends BaseModelExample {
     protected List<Criteria> oredCriteria;
